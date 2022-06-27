@@ -124,10 +124,13 @@
         });
       
       const renderBlocks = (blocks) => {
-        blocks.forEach((block) => {
+        blocks.forEach((block, index) => {
           if (block.image && block.image.large.url) {
             let tmpl = document.getElementById('image-block');
             let clone = tmpl.content.cloneNode(true);
+            if (index == 0) {
+              clone.querySelector('li').classList.add('active');
+            }
             clone.querySelector('img').src = block.image.large.url;
             clone.querySelector('img').alt = block['generated_title'];
 
@@ -145,7 +148,7 @@
           activeIdx = (activeIdx + 1) % heroImgs.length;
           heroImgs[activeIdx].classList.add('active');
           heroImgContainer.dataset.activeIdx = activeIdx;
-        }, 300);
+        }, 175);
       };
 
       const runColors = () => {
