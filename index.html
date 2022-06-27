@@ -1,4 +1,7 @@
+<!DOCTYPE html>
+<html>
 <head>
+  <meta charset="utf-8">
   <title>Ercan–Li</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <link href="./fonts/stylesheet.css" rel="stylesheet">
@@ -8,36 +11,140 @@
       margin: 12px;
     }
 
-    p {
+    h1 {
+      font-weight: normal;
       font-family: Walbaum;
       font-size: .9em;
       color: black;
       margin: 0;
       line-height: 1.3em;
     }
+
     a {
       color: currentColor;
     }
-    .hero__container a {
+
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .hero {
       position: fixed;
       top: 0;
       left: 0;
       bottom: 0;
       right: 0;
-      margin: 20%;
       display: flex;
-      align-content: center;
+      align-items: center;
+      justify-content: center;
     }
 
-    .hero__container a img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
+    .hero__container {
+      position: relative;
+    }
+
+    .hero__container li {
+      display: none;
+    }
+
+    .hero__container li.active {
+      display: block;
+    }
+
+    .hero__container li a {
+      display: block;
+    }
+
+    img {
+      display: block;
+      max-height: 50vh;
+      width: auto;
+      max-width: 50vw;
+      height: auto;
+      filter: brightness(115%) grayscale(100%) contrast(5000%) ;
+    }
+    
+
+    .hero__container:after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      mix-blend-mode: lighten;
+      background-color: var(--background, #dd6203);
+      transition: background 4s linear;
     }
   </style>
 </head>
-<p>Ercan–Li is the design practice of <a href="http://nazli-ercan.com/"><nobr>Nazlı Ercan</nobr></a> and <a href="https://eric.young.li/"><nobr>Eric Li</nobr></a><br><a href="mailto:studioercanli@gmail.com">studioercanli@gmail.com</a></p>
+<body>
+  <h1>Ercan–Li is the design practice of <a href="http://nazli-ercan.com/"><nobr>Nazlı Ercan</nobr></a> and <a href="https://eric.young.li/"><nobr>Eric Li</nobr></a><br><a href="mailto:studioercanli@gmail.com">studioercanli@gmail.com</a></h1>
 
-<div class="hero__container">
-  <a href="/"><img src="work.gif" loading="lazy" width="2038" height="2174" alt="Colorful gif our Ercan–Li's collective work" /></a>
-</div>
+  <div class="hero">
+    <ul class="hero__container" data-active-idx="0" data-active-color-idx="0"></ul>
+  </div>
+
+  <template id="image-block">
+    <li>
+      <a href="/">
+        <img src="" alt="" loading="lazy" />
+      </a>
+    </li>
+  </template>
+  
+  <script>
+    const colors = ['#dd6203', '#6aab00', '#224fc7'];
+    window.addEventListener('DOMContentLoaded', () => {
+      const channel = 'image-sequence';
+
+      fetch(`https://api.are.na/v2/channels/${channel}?per=100`, {cache: 'no-store'})
+        .then(response => response.json())
+        .then(data => {
+          renderBlocks(data.contents);
+          runImages();
+          runColors();
+        });
+      
+      const renderBlocks = (blocks) => {
+        blocks.forEach((block) => {
+          let tmpl = document.getElementById('image-block');
+          let clone = tmpl.content.cloneNode(true);
+          clone.querySelector('img').src = block.image.large.url;
+          clone.querySelector('img').alt = block['generated_title'];
+
+          document.querySelector('ul').appendChild(clone);
+        });
+      };
+
+      const runImages = () => {
+        const heroImgContainer = document.querySelector('ul');
+        return setInterval(() => {
+          let heroImgs = heroImgContainer.querySelectorAll('li');
+          let activeIdx = parseInt(heroImgContainer.dataset.activeIdx);
+          heroImgs[activeIdx].classList.remove('active');
+          activeIdx = (activeIdx + 1) % heroImgs.length;
+          heroImgs[activeIdx].classList.add('active');
+          heroImgContainer.dataset.activeIdx = activeIdx;
+        }, 150);
+      };
+
+      const runColors = () => {
+        runColor();
+        return setInterval(runColor, 1000 * 7);
+      }
+
+      const runColor = () => {
+        const heroImgContainer = document.querySelector('ul');
+        let activeColorIdx = parseInt(heroImgContainer.dataset.activeColorIdx);
+        heroImgContainer.style.setProperty('--background', colors[activeColorIdx]);
+        activeColorIdx = (activeColorIdx + 1) % colors.length;
+        heroImgContainer.dataset.activeColorIdx = activeColorIdx;
+      };
+    });
+  </script>
+</body>
+<html>
