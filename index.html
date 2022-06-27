@@ -105,7 +105,7 @@
   <template id="image-block">
     <li>
       <a href="/">
-        <img src="" alt="" loading="lazy" />
+        <img src="" alt="" />
       </a>
     </li>
   </template>
@@ -125,10 +125,10 @@
       
       const renderBlocks = (blocks) => {
         blocks.forEach((block) => {
-          if (block.image && block.image.large.url) {
+          if (block.image && block.image.medium.url) {
             let tmpl = document.getElementById('image-block');
             let clone = tmpl.content.cloneNode(true);
-            clone.querySelector('img').src = block.image.large.url;
+            clone.querySelector('img').src = block.image.medium.url;
             clone.querySelector('img').alt = block['generated_title'];
 
             document.querySelector('ul').appendChild(clone);
