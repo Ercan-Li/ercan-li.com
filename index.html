@@ -11,13 +11,17 @@
       margin: 12px;
     }
 
-    h1 {
+    h1, p {
       font-weight: normal;
       font-family: Walbaum;
       font-size: .9em;
       color: black;
       margin: 0;
       line-height: 1.3em;
+    }
+
+    .social-media {
+      margin-top: 1em;
     }
 
     a {
@@ -39,6 +43,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      pointer-events: none;
     }
 
     .hero__container {
@@ -46,6 +51,7 @@
     }
 
     .hero__container li {
+      pointer-events: all;
       display: none;
     }
 
@@ -66,7 +72,6 @@
       filter: brightness(115%) grayscale(100%) contrast(5000%) ;
     }
     
-
     .hero__container:after {
       content: "";
       display: block;
@@ -79,10 +84,16 @@
       background-color: var(--background, #dd6203);
       transition: background 4s linear;
     }
+
   </style>
 </head>
 <body>
   <h1>Ercan–Li is the design practice of <a href="http://nazli-ercan.com/"><nobr>Nazlı Ercan</nobr></a> and <a href="https://eric.young.li/"><nobr>Eric Li</nobr></a><br><a href="mailto:studioercanli@gmail.com">studioercanli@gmail.com</a></h1>
+  
+  <div class="social-media">
+    <p><a href="https://twitter.com/ercan__li" target="_blank">twitter</a></p>
+    <p><a href="https://www.instagram.com/ercan__li/?hl=en" target="_blank">instagram</a></p>
+  </div>
 
   <div class="hero">
     <ul class="hero__container" data-active-idx="0" data-active-color-idx="0"></ul>
